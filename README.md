@@ -8,7 +8,7 @@ Tunify is a music streaming platform that allows users to create playlists, list
 
 The following Entity-Relationship Diagram (ERD) outlines the structure of the Tunify Platform's database:
 
-![Tunify ERD Diagram](Tunify-Platform/ERD/Tunify.png)
+![Tunify ERD Diagram](TunifyPlatform/ERD/Tunify.png)
 
 ## Entities and Relationships
 
