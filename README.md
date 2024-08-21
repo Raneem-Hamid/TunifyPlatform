@@ -82,3 +82,65 @@ The Repository Design Pattern is a structural approach that isolates the logic r
 - **Testability:** Repositories offer a consistent interface for data operations, simplifying the process of mocking or stubbing them during unit testing, thus improving test coverage.
 - **Maintainability:** Modifications to data access, whether it involves changing the database or altering query logic, are isolated within the repository layer, minimizing the impact on other parts of the application.
 - **Reusability:** Repositories centralize common data access logic, allowing it to be reused across multiple areas of the application, reducing code duplication.
+
+## Swagger UI Integration
+
+### Overview
+
+In this section, we added Swagger UI to the Tunify Platform to provide automated API documentation and an interactive interface for testing API endpoints. Swagger UI simplifies understanding and exploring the API by generating visual documentation of all available endpoints.
+
+### Instructions for Setting Up Swagger UI
+
+1. **Install Swashbuckle.AspNetCore**
+
+   To integrate Swagger UI, install the Swashbuckle.AspNetCore package:
+
+   ```sh
+   Install-Package Swashbuckle.AspNetCore
+2. Configure Swagger in the Startup Class
+
+Modify the Program.cs file to configure Swagger:
+
+**Add Swagger Services**
+
+```sh
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Tunify API",
+        Version = "v1",
+        Description = "API for managing playlists, songs, and artists in the Tunify Platform"
+    });
+});       
+```
+
+**Enable Swagger and Swagger UI**
+
+
+```sh
+app.UseSwagger(options =>
+{
+    options.RouteTemplate = "api/{documentName}/swagger.json";
+});
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tunify API v1");
+    options.RoutePrefix = "";
+});
+   
+```
+
+**Access and Use Swagger UI**
+
+Launch the application.
+Navigate to 
+
+```sh 
+http://localhost:your_port/musicAPI (replace your_port with the port number your application is running on).
+```
+The Swagger UI should appear, allowing you to interact with and test the API endpoints. Use this interface to verify that all endpoints are documented correctly and to test their functionality.
+
+
+
