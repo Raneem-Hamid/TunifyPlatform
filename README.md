@@ -143,4 +143,24 @@ http://localhost:your_port/musicAPI (replace your_port with the port number your
 The Swagger UI should appear, allowing you to interact with and test the API endpoints. Use this interface to verify that all endpoints are documented correctly and to test their functionality.
 
 
+## Identity Implementation
 
+### Overview
+The Tunify Platform now supports user authentication using ASP.NET Core Identity. This enables users to register, log in, and log out securely.
+
+### Registration
+To register a new user, send a POST request to:
+```sh
+POST /api/account/register
+```
+
+### Login
+To log in, send a POST request to:
+```sh
+POST /api/account/login
+```
+### Logout
+To log out, send a POST request to:
+```sh
+POST /api/account/logout
+```

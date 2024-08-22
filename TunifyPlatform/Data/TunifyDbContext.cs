@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TunifyPlatform.Models;
 using TunifyPlatform.Repositories.Interfaces;
 
 namespace TunifyPlatform.Data
 {
-    public class TunifyDbContext : DbContext
+    public class TunifyDbContext : IdentityDbContext<Account>
     {
         public TunifyDbContext ( DbContextOptions options) : base(options)
         {
