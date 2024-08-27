@@ -164,3 +164,30 @@ To log out, send a POST request to:
 ```sh
 POST /api/account/logout
 ```
+## Authorization and Claims
+
+### Overview
+The Tunify Platform implements **JWT (JSON Web Token)** authentication to secure API endpoints. JWT tokens allow stateless authentication, ensuring that users can be authenticated without requiring server-side session storage. Authorization is handled through a **claims-based** model, where user roles and permissions dictate access to various parts of the system.
+
+### Authentication Workflow
+1. **User Registration**: Users register and are assigned a default role (e.g., "User").
+2. **Login**: Upon logging in with valid credentials, users receive a JWT token, which includes claims indicating their identity and roles.
+3. **Token Usage**: The token is sent in the `Authorization` header of each subsequent request to protected endpoints.
+
+### JWT Token Structure
+- **Header**: Specifies the algorithm used for signing the token.
+- **Payload**: Contains user claims, such as `sub` (subject), `role`, and `permissions`.
+- **Signature**: Ensures that the token hasn't been tampered with.
+
+### Authorization Workflow
+1. **Roles and Claims**: Each user is assigned a role (e.g., `Admin`, `User`). Roles come with a set of claims that represent permissions (e.g., `ManageUsers`, `ViewPlaylists`).
+2. **Policy-Based Authorization**: ASP.NET Core enforces authorization through policies. These policies check if the user's token contains the necessary claims to access a particular resource.
+
+### API Security
+- **Role-Based Access Control**: Tunify Platform uses role-based access control (RBAC) to restrict access to specific endpoints based on user roles.
+- **Protected Endpoints**: Sensitive endpoints are protected using the `[Authorize]` attribute, ensuring that only authenticated users with the appropriate roles can access them.
+- **Admin-Only Actions**: Certain actions, such as deleting songs, are restricted to users with the `Admin` role, providing an additional layer of security.
+
+### Example Usage
+- **User Endpoints**: Accessible by authenticated users with the `User` role.
+- **Admin Endpoints**: Accessible only by authenticated users with the `Admin` role.
