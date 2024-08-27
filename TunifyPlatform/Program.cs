@@ -4,6 +4,9 @@ using TunifyPlatform.Data;
 using TunifyPlatform.Repositories.Interfaces;
 using TunifyPlatform.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.OpenApi.Models;
 
 namespace TunifyPlatform
 {
@@ -30,6 +33,7 @@ namespace TunifyPlatform
             builder.Services.AddTransient<IPlayList, PlayListService>();
             builder.Services.AddTransient<ISong, SongService>();
             builder.Services.AddScoped<IAccount, IdentityAccountService>();
+            builder.Services.AddScoped<JwtTokenService>();
 
             // Swagger Configuration
             builder.Services.AddSwaggerGen(options =>
@@ -40,13 +44,51 @@ namespace TunifyPlatform
                     Version = "v1",
                     Description = "API for managing playlists, songs, and artists in the Tunify Platform"
                 });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Please enter user token below."
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                    });
             });
+
+            //Jwt Authentecation
+            builder.Services.AddAuthentication(options =>
+            {
+
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(
+                options =>
+                {
+                    options.TokenValidationParameters = JwtTokenService.ValidateToken(builder.Configuration);
+            });
+        
 
             var app = builder.Build();
 
             // Middleware Configuration
             app.UseAuthentication();
-            app.UseAuthorization(); // Add this if you're using authorization
+            app.UseAuthorization(); 
             app.MapControllers();
 
             // Swagger Middleware

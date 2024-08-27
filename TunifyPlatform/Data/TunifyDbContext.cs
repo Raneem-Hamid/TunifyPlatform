@@ -99,6 +99,36 @@ namespace TunifyPlatform.Data
                 new PlaylistSongs { Playlist_ID = 3, Song_ID = 3 }
             );
 
+            SeedRoles(modelBuilder, "Admin", new[] { "ManageUsers", "ManagePlaylists" });
+            SeedRoles(modelBuilder, "User", new[] { "ViewPlaylists", "AddSongs" });
+
+        }
+
+
+        private void SeedRoles(ModelBuilder modelBuilder , string roleName , params string[] permissions)
+        {
+            var role = new IdentityRole
+            {
+                Id = roleName,
+                Name = roleName.ToLower(),
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.Empty.ToString()
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            //foreach (var permission in permissions)
+            //{
+            //    var roleClaim = new IdentityRoleClaim<string>
+            //    {
+                   
+            //        RoleId = role.Id,
+            //        ClaimType = "Permission",
+            //        ClaimValue = permission
+            //    };
+
+            //    modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaim);
+            //}
         }
     }
 }
